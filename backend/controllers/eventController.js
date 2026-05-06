@@ -1,4 +1,4 @@
-const Event = require('../models/Event');
+const Event = require('../models/event');
 // Import both categorization and description services
 const { categorizeEvent, generateAIDescription } = require('../services/aiService');
 
