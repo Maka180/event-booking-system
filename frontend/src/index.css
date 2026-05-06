@@ -1,0 +1,285 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+:root {
+  --cream: #FAFAF7;
+  --ink: #1A1A18;
+  --accent: #D4A843;
+  --accent-light: #FBF4E3;
+  --border: #E8E6DF;
+}
+
+body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--ink); margin: 0; }
+.max-container { max-width: 1000px; margin: 0 auto; padding: 0 1.5rem; }
+
+/* HEADER & HERO */
+.header { background: var(--ink); color: #fff; display: flex; justify-content: space-between; padding: 1rem 2rem; align-items: center; }
+.logo { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.4rem; }
+.logo span { color: var(--accent); }
+
+.hero { background: var(--ink); color: #fff; padding: 4rem 0 6rem; position: relative; overflow: hidden; }
+.hero h1 { font-family: 'Playfair Display', serif; font-size: 3.5rem; line-height: 1.1; }
+.hero-badge { background: var(--accent); color: var(--ink); padding: 4px 12px; border-radius: 100px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
+
+/* STATS BAR - The Cream Box in your design */
+.stats-bar {
+  background: var(--accent-light);
+  border: 1px solid #F0DCA0;
+  border-radius: 14px;
+  padding: 1.5rem;
+  display: flex;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+.stat-num { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 900; }
+.stat-lbl { font-size: 0.7rem; color: #8B8B6B; text-transform: uppercase; font-weight: 700; }
+.stat-divider { width: 1px; height: 40px; background: #E8D8B0; }
+
+/* BUTTONS */
+.publish-btn, .search-btn {
+  background: var(--ink); color: #fff; border: none; border-radius: 10px;
+  padding: 12px 24px; font-weight: 600; cursor: pointer;
+}
+
+/* Ensure the grid spreads out */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+/* Metadata styling */
+.card-meta {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid var(--border);
+  padding-top: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.meta-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #BDBDAD;
+  margin-bottom: 4px;
+}
+
+.meta-value {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+/* Container for the form to match image_8aa2b6.png */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+/* Fix the card thumb background */
+.card-thumb {
+  height: 160px;
+  background: #E8EAF6; /* Light purple like your alumni card */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* Picnic card specific style for thumb if needed */
+.event-card:nth-child(even) .card-thumb {
+  background: #E8F5E9; /* Light green for the picnic */
+}
+
+/* Ensure text doesn't touch the edges */
+.card-body {
+  padding: 1.5rem;
+  background: #fff;
+}
+
+/* Make search input rounded like the design */
+.search-inner {
+  background: #fff;
+  border-radius: 100px; /* Fully rounded search bar */
+  display: flex;
+  align-items: center;
+  padding: 8px 24px;
+  border: 1.5px solid var(--border);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+/* Layout for the form rows */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.form-eyebrow {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #BDBDAD;
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.05em;
+}
+
+.button-align {
+  display: flex;
+  align-items: flex-end;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.view-all {
+  font-size: 0.8rem;
+  color: #8B8B6B;
+  cursor: pointer;
+}
+
+.meta-col { flex: 1; }
+/* Card Improvements */
+.event-card {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.event-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+}
+
+.card-thumb {
+  height: 180px;
+  position: relative;
+}
+
+.card-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: #1a1a1a;
+}
+
+.card-body {
+  padding: 1.5rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-body h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.25rem;
+  color: #111;
+}
+
+.card-body p {
+  color: #666;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.card-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.85rem;
+  color: #888;
+  margin-bottom: 1rem;
+}
+
+/* Form Styling */
+.create-event-form {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.input-group label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.input-group input, .input-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-family: inherit;
+}
+
+.publish-btn {
+  background: #000;
+  color: #fff;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: opacity 0.2s;
+}
+
+.publish-btn:hover {
+  opacity: 0.8;
+}
+.card-btn-outline {
+  flex: 1;
+  background: transparent;
+  border: 1px solid #ff4d4d;
+  color: #ff4d4d;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.card-btn-outline:hover {
+  background: #fff5f5;
+}
+
+.delete-icon-btn {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(255, 255, 255, 0.8);
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.delete-icon-btn:hover {
+  background: #ff4d4d;
+  color: white;
+}
