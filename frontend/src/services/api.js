@@ -1,8 +1,17 @@
 import axios from 'axios';
 
-// This baseURL ensures everything goes to your Node.js server on Port 5000
-const API = axios.create({ baseURL: 'http://localhost:5000/api' });
+/**
+ * 🌍 DYNAMIC BASE URL
+ * Locally: Defaults to localhost:5000
+ * Deployed: Will use the REACT_APP_API_URL you set in Vercel/Render
+ */
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
+const API = axios.create({ 
+  baseURL: API_BASE_URL 
+});
+
+// REQUEST INTERCEPTOR
 API.interceptors.request.use((req) => {
   const token = localStorage.getItem('token'); 
   
@@ -27,3 +36,5 @@ export const bookEvent = (id) => API.put(`/events/${id}/book`);
  * Sends the event title to the backend to generate a professional description.
  */
 export const generateAIDescription = (title) => API.post('/events/ai/describe', { title });
+
+export default API;
