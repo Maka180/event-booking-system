@@ -21,12 +21,12 @@ const eventSchema = new mongoose.Schema({
     type: Date, 
     required: true 
   },
-  // Added field for custom event images
+  
   imageUrl: {
     type: String,
     default: "" 
   },
-  // Renamed from 'organizer' to 'creator' to match your Route & Controller logic
+  
   creator: { 
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'User', 

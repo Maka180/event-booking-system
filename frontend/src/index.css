@@ -20,7 +20,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(
 .hero h1 { font-family: 'Playfair Display', serif; font-size: 3.5rem; line-height: 1.1; }
 .hero-badge { background: var(--accent); color: var(--ink); padding: 4px 12px; border-radius: 100px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
 
-/* STATS BAR - The Cream Box in your design */
+
 .stats-bar {
   background: var(--accent-light);
   border: 1px solid #F0DCA0;
@@ -40,7 +40,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(
   padding: 12px 24px; font-weight: 600; cursor: pointer;
 }
 
-/* Ensure the grid spreads out */
+
 .cards-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -68,38 +68,38 @@ body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(
   font-size: 0.85rem;
   font-weight: 600;
 }
-/* Container for the form to match image_8aa2b6.png */
+
 .form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5rem;
 }
 
-/* Fix the card thumb background */
+
 .card-thumb {
   height: 160px;
-  background: #E8EAF6; /* Light purple like your alumni card */
+  background: #E8EAF6; 
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
 }
 
-/* Picnic card specific style for thumb if needed */
+
 .event-card:nth-child(even) .card-thumb {
-  background: #E8F5E9; /* Light green for the picnic */
+  background: #E8F5E9; 
 }
 
-/* Ensure text doesn't touch the edges */
+
 .card-body {
   padding: 1.5rem;
   background: #fff;
 }
 
-/* Make search input rounded like the design */
+
 .search-inner {
   background: #fff;
-  border-radius: 100px; /* Fully rounded search bar */
+  border-radius: 100px; 
   display: flex;
   align-items: center;
   padding: 8px 24px;
@@ -140,7 +140,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(
 }
 
 .meta-col { flex: 1; }
-/* Card Improvements */
+
 .event-card {
   background: white;
   border-radius: 16px;

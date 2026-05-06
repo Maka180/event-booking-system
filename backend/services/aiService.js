@@ -54,7 +54,7 @@ exports.generateAIDescription = async (title) => {
   }
 
   try {
-    // ✨ Use the exact name from your curl output
+    // ✨ Use the exact name from  curl output
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
     
     const prompt = `Write a short, high-energy 2-sentence description for an event titled: "${title}". Include a call to action.`;
@@ -64,16 +64,13 @@ exports.generateAIDescription = async (title) => {
     return response.text();
   } catch (error) {
     console.error("⚠️ [GEMINI-LOG]: Generation failed:", error.message);
-    // This was your previous fallback—it will no longer trigger if the model name is correct!
+    
     return "Join us for an incredible experience you won't want to miss!";
   }
 };
 
 
-/**
- * REFINED HEURISTIC FALLBACK
- * Uses whole-word matching to ensure high accuracy.
- */
+
 function fallbackCategorize(description, title) {
   const content = (title + " " + description).toLowerCase();
   const has = (word) => new RegExp(`\\b${word}\\b`, 'i').test(content);

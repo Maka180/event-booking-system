@@ -27,11 +27,11 @@ const userSchema = new mongoose.Schema({
   timestamps: true 
 });
 
+
 // Hashing the password before saving
-// Hashing the password before saving
-userSchema.pre('save', async function () { // Removed 'next' here
+userSchema.pre('save', async function () { 
   if (!this.isModified('password')) {
-    return; // Just return instead of calling next()
+    return; 
   }
   
   const salt = await bcrypt.genSalt(10);
