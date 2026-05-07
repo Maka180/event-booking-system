@@ -10,7 +10,12 @@ const eventRoutes = require('./routes/eventRoutes');
 const app = express();
 
 // Middleware
-app.use(cors());
+/*app.use(cors());*/
+app.use(cors({
+  origin: '*', // This allows all origins (including your Vercel link)
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json());
 
 // Register routes
