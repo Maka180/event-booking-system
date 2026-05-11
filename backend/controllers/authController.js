@@ -83,8 +83,20 @@ exports.forgotPassword = async (req, res) => {
 
     const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
 
-    await resend.emails.send({
-      from: 'onboarding@resend.dev',
+   const nodemailer = require('nodemailer');
+
+const transporter = nodemailer.createTransport({
+  host: 'smtp-relay.brevo.com',
+  port: 587,
+  secure: false,
+  auth: {
+    user: process.env.BREVO_USER,
+    pass: process.env.BREVO_PASS,
+  }
+});
+
+    await transporter.sendMail({
+      from: process.env.BREVO_USER,
       to: user.email,
       subject: 'EventHub Password Reset Request',
       text: `You are receiving this because you (or someone else) requested a password reset.\n\nPlease click on the following link:\n\n${resetUrl}\n\nThis link expires in 10 minutes.\n\nIf you did not request this, please ignore this email.`,
