@@ -82,15 +82,16 @@ exports.forgotPassword = async (req, res) => {
     // ✅ FIX 1: Use environment variable instead of hardcoded localhost
     const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
 
-    // ✅ FIX 2: Removed tls block (not needed for Gmail)
+    
     const transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',  
-  port: 587,               
-  secure: false,           
+  host: 'smtp.gmail.com',
+  port: 587,
+  secure: false,
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
-  }
+  },
+  family: 4  // ✅ Forces IPv4
 });
 
     // ✅ FIX 3: Added 'from' field
