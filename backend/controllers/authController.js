@@ -1,7 +1,9 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Function to create the token
 const generateToken = (id, role) => {
@@ -79,30 +81,15 @@ exports.forgotPassword = async (req, res) => {
 
     await user.save();
 
-    // ✅ FIX 1: Use environment variable instead of hardcoded localhost
     const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
 
-    
-   const { Resend } = require('resend');
-const resend = new Resend(process.env.RESEND_API_KEY);
-
-// Replace the transporter + sendMail section with:
-await resend.emails.send({
-  from: 'onboarding@resend.dev',
-  to: user.email,
-  subject: 'EventHub Password Reset Request',
-  text: `You are receiving this because you (or someone else) requested a password reset. \n\n Please click on the following link: \n\n ${resetUrl} \n\n This link expires in 10 minutes. \n\n If you did not request this, please ignore this email.`,
-});
-
-    // ✅ FIX 3: Added 'from' field
-    const mailOptions = {
-      from: process.env.EMAIL_USER,
+    await resend.emails.send({
+      from: 'onboarding@resend.dev',
       to: user.email,
       subject: 'EventHub Password Reset Request',
-      text: `You are receiving this because you (or someone else) requested a password reset. \n\n Please click on the following link: \n\n ${resetUrl} \n\n This link expires in 10 minutes. \n\n If you did not request this, please ignore this email.`,
-    };
+      text: `You are receiving this because you (or someone else) requested a password reset.\n\nPlease click on the following link:\n\n${resetUrl}\n\nThis link expires in 10 minutes.\n\nIf you did not request this, please ignore this email.`,
+    });
 
-    await transporter.sendMail(mailOptions);
     res.status(200).json({ message: "Reset email sent successfully" });
 
   } catch (error) {
@@ -115,7 +102,6 @@ await resend.emails.send({
 // @route   PUT /api/auth/reset-password/:token
 exports.resetPassword = async (req, res) => {
   try {
-    // Hash the token from the URL to compare with the one in DB
     const resetPasswordToken = crypto.createHash('sha256').update(req.params.token).digest('hex');
 
     const user = await User.findOne({
@@ -127,7 +113,6 @@ exports.resetPassword = async (req, res) => {
       return res.status(400).json({ message: "Invalid or expired token" });
     }
 
-    // Set new password (the User model pre-save hook will hash this)
     user.password = req.body.password;
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;
