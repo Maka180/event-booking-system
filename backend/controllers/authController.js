@@ -1,9 +1,9 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
-const Brevo = require('@getbrevo/brevo');
+const { TransactionalEmailsApi, SendSmtpEmail } = require('@getbrevo/brevo');
 
-const brevoClient = new Brevo.TransactionalEmailsApi();
+const brevoClient = new TransactionalEmailsApi();
 brevoClient.authentications['apiKey'].apiKey = process.env.BREVO_API_KEY;
 
 // Function to create the token
@@ -82,7 +82,7 @@ exports.forgotPassword = async (req, res) => {
 
     const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
 
-    const sendSmtpEmail = new Brevo.SendSmtpEmail();
+    const sendSmtpEmail = new SendSmtpEmail();
     sendSmtpEmail.to = [{ email: user.email }];
     sendSmtpEmail.sender = { email: process.env.BREVO_USER, name: 'EventHub' };
     sendSmtpEmail.subject = 'EventHub Password Reset Request';
