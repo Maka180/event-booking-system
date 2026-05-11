@@ -1,17 +1,10 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
-const nodemailer = require('nodemailer');
+const Brevo = require('@getbrevo/brevo');
 
-const transporter = nodemailer.createTransport({
-  host: 'smtp-relay.brevo.com',
-  port: 587,
-  secure: false,
-  auth: {
-    user: process.env.BREVO_USER,
-    pass: process.env.BREVO_PASS,
-  }
-});
+const brevoClient = new Brevo.TransactionalEmailsApi();
+brevoClient.authentications['apiKey'].apiKey = process.env.BREVO_API_KEY;
 
 // Function to create the token
 const generateToken = (id, role) => {
@@ -89,12 +82,13 @@ exports.forgotPassword = async (req, res) => {
 
     const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
 
-    await transporter.sendMail({
-      from: process.env.BREVO_USER,
-      to: user.email,
-      subject: 'EventHub Password Reset Request',
-      text: `You are receiving this because you (or someone else) requested a password reset.\n\nPlease click on the following link:\n\n${resetUrl}\n\nThis link expires in 10 minutes.\n\nIf you did not request this, please ignore this email.`,
-    });
+    const sendSmtpEmail = new Brevo.SendSmtpEmail();
+    sendSmtpEmail.to = [{ email: user.email }];
+    sendSmtpEmail.sender = { email: process.env.BREVO_USER, name: 'EventHub' };
+    sendSmtpEmail.subject = 'EventHub Password Reset Request';
+    sendSmtpEmail.textContent = `You are receiving this because you (or someone else) requested a password reset.\n\nPlease click on the following link:\n\n${resetUrl}\n\nThis link expires in 10 minutes.\n\nIf you did not request this, please ignore this email.`;
+
+    await brevoClient.sendTransacEmail(sendSmtpEmail);
 
     res.status(200).json({ message: "Reset email sent successfully" });
 
