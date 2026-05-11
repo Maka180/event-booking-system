@@ -83,15 +83,15 @@ exports.forgotPassword = async (req, res) => {
     const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
 
     
-    const transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
-  port: 587,
-  secure: false,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-  family: 4  // ✅ Forces IPv4
+   const { Resend } = require('resend');
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+// Replace the transporter + sendMail section with:
+await resend.emails.send({
+  from: 'onboarding@resend.dev',
+  to: user.email,
+  subject: 'EventHub Password Reset Request',
+  text: `You are receiving this because you (or someone else) requested a password reset. \n\n Please click on the following link: \n\n ${resetUrl} \n\n This link expires in 10 minutes. \n\n If you did not request this, please ignore this email.`,
 });
 
     // ✅ FIX 3: Added 'from' field
