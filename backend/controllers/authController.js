@@ -1,9 +1,17 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
-const { Resend } = require('resend');
+const nodemailer = require('nodemailer');
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const transporter = nodemailer.createTransport({
+  host: 'smtp-relay.brevo.com',
+  port: 587,
+  secure: false,
+  auth: {
+    user: process.env.BREVO_USER,
+    pass: process.env.BREVO_PASS,
+  }
+});
 
 // Function to create the token
 const generateToken = (id, role) => {
@@ -72,28 +80,14 @@ exports.forgotPassword = async (req, res) => {
       return res.status(404).json({ message: "No user found with that email" });
     }
 
-    // Create a reset token (plain text for email)
     const resetToken = crypto.randomBytes(20).toString('hex');
 
-    // Hash the token and save it to the DB for comparison later
     user.resetPasswordToken = crypto.createHash('sha256').update(resetToken).digest('hex');
-    user.resetPasswordExpire = Date.now() + 10 * 60 * 1000; // 10 Minutes from now
+    user.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
 
     await user.save();
 
     const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
-
-   const nodemailer = require('nodemailer');
-
-const transporter = nodemailer.createTransport({
-  host: 'smtp-relay.brevo.com',
-  port: 587,
-  secure: false,
-  auth: {
-    user: process.env.BREVO_USER,
-    pass: process.env.BREVO_PASS,
-  }
-});
 
     await transporter.sendMail({
       from: process.env.BREVO_USER,
