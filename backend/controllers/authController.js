@@ -1,10 +1,28 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
-const { TransactionalEmailsApi, SendSmtpEmail } = require('@getbrevo/brevo');
 
-const brevoClient = new TransactionalEmailsApi();
-brevoClient.authentications['apiKey'].apiKey = process.env.BREVO_API_KEY;
+// Send email via Brevo HTTP API (no SDK needed)
+const sendBrevoEmail = async (to, subject, text) => {
+  const response = await fetch('https://api.brevo.com/v3/smtp/email', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'api-key': process.env.BREVO_API_KEY,
+    },
+    body: JSON.stringify({
+      sender: { email: process.env.BREVO_USER, name: 'EventHub' },
+      to: [{ email: to }],
+      subject: subject,
+      textContent: text,
+    }),
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(JSON.stringify(error));
+  }
+};
 
 // Function to create the token
 const generateToken = (id, role) => {
@@ -82,13 +100,11 @@ exports.forgotPassword = async (req, res) => {
 
     const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
 
-    const sendSmtpEmail = new SendSmtpEmail();
-    sendSmtpEmail.to = [{ email: user.email }];
-    sendSmtpEmail.sender = { email: process.env.BREVO_USER, name: 'EventHub' };
-    sendSmtpEmail.subject = 'EventHub Password Reset Request';
-    sendSmtpEmail.textContent = `You are receiving this because you (or someone else) requested a password reset.\n\nPlease click on the following link:\n\n${resetUrl}\n\nThis link expires in 10 minutes.\n\nIf you did not request this, please ignore this email.`;
-
-    await brevoClient.sendTransacEmail(sendSmtpEmail);
+    await sendBrevoEmail(
+      user.email,
+      'EventHub Password Reset Request',
+      `You are receiving this because you (or someone else) requested a password reset.\n\nPlease click on the following link:\n\n${resetUrl}\n\nThis link expires in 10 minutes.\n\nIf you did not request this, please ignore this email.`
+    );
 
     res.status(200).json({ message: "Reset email sent successfully" });
 
