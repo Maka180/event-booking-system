@@ -54,10 +54,7 @@ exports.generateAIDescription = async (title) => {
   }
 
   try {
-    // ✨ Use the exact name from  curl output
-    const model = genAI.getGenerativeModel({ 
-  model: "gemini-1.5-flash-latest" 
-});
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
     
     const prompt = `Write a short, high-energy 2-sentence description for an event titled: "${title}". Include a call to action.`;
     
