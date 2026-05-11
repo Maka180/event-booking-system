@@ -32,7 +32,7 @@ function App() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/auth/login`, loginData);
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/login`, loginData);
       const token = response.data.token;
       if (token) {
         localStorage.setItem('token', token);
@@ -46,7 +46,7 @@ function App() {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/auth/register`, signupData);
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/register`, signupData);
       localStorage.setItem('token', response.data.token);
       setIsLoggedIn(true);
     } catch (err) {
@@ -57,7 +57,7 @@ function App() {
   const handleForgotPassword = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/auth/forgot-password`, { email: forgotEmail });
+      const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/forgot-password`, { email: forgotEmail });
       setMessage({ text: data.message, type: 'success' });
     } catch (err) {
       setMessage({ text: err.response?.data?.message || "Error sending email", type: 'error' });
@@ -206,7 +206,6 @@ function App() {
               >
                 <span className="card-badge">{event.attendees?.length || 0} JOINED</span>
                 
-                {/* AI CATEGORY BADGE */}
                 {event.category && (
                   <span style={{
                     position: 'absolute',
