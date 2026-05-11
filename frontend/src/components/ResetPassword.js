@@ -6,7 +6,7 @@ const ResetPassword = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState('');
-  const { token } = useParams(); // Gets the token from the URL
+  const { token } = useParams();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -16,8 +16,7 @@ const ResetPassword = () => {
     }
 
     try {
-      // Hits the PUT route: /api/auth/reset-password/:token
-      await axios.put(`/api/auth/reset-password/${token}`, { password });
+      await axios.put(`${process.env.REACT_APP_API_URL}/api/auth/reset-password/${token}`, { password });
       alert("Password updated successfully!");
       navigate('/login');
     } catch (err) {
