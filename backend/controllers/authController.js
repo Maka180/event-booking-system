@@ -79,25 +79,24 @@ exports.forgotPassword = async (req, res) => {
 
     await user.save();
 
-    // The URL the user clicks in the email
-    const resetUrl = `http://localhost:3000/reset-password/${resetToken}`;
+    // ✅ FIX 1: Use environment variable instead of hardcoded localhost
+    const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
 
-   const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-  tls: {
-    // This allows the request to bypass certificate validation on localhost
-    rejectUnauthorized: false
-  }
-});
+    // ✅ FIX 2: Removed tls block (not needed for Gmail)
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      }
+    });
 
+    // ✅ FIX 3: Added 'from' field
     const mailOptions = {
+      from: process.env.EMAIL_USER,
       to: user.email,
       subject: 'EventHub Password Reset Request',
-      text: `You are receiving this because you (or someone else) requested a password reset. \n\n Please click on the following link: \n\n ${resetUrl} \n\n If you did not request this, please ignore this email.`,
+      text: `You are receiving this because you (or someone else) requested a password reset. \n\n Please click on the following link: \n\n ${resetUrl} \n\n This link expires in 10 minutes. \n\n If you did not request this, please ignore this email.`,
     };
 
     await transporter.sendMail(mailOptions);
@@ -118,7 +117,7 @@ exports.resetPassword = async (req, res) => {
 
     const user = await User.findOne({
       resetPasswordToken,
-      resetPasswordExpire: { $gt: Date.now() }, // Must not be expired
+      resetPasswordExpire: { $gt: Date.now() },
     });
 
     if (!user) {
