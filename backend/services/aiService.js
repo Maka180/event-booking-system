@@ -54,7 +54,7 @@ exports.generateAIDescription = async (title) => {
   }
 
   try {
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-8b" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
     const prompt = `Write a short, high-energy 2-sentence description for an event titled: "${title}". Include a call to action.`;
     
     const result = await model.generateContent(prompt);
