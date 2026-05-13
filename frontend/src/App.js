@@ -15,7 +15,7 @@ function App() {
   const [forgotEmail, setForgotEmail] = useState('');
   const [message, setMessage] = useState({ text: '', type: '' });
 
-  // ✅ useEffect BEFORE any conditional returns
+  
   useEffect(() => {
     if (isLoggedIn) loadEvents();
   }, [isLoggedIn]);

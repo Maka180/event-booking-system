@@ -1,10 +1,6 @@
 import axios from 'axios';
 
-/**
- * 🌍 DYNAMIC BASE URL
- * Locally: Defaults to localhost:5000/api
- * Deployed: Uses REACT_APP_API_URL from Vercel environment variables
- */
+
 const API_BASE_URL = process.env.REACT_APP_API_URL 
   ? `${process.env.REACT_APP_API_URL}/api`
   : 'http://localhost:5000/api';

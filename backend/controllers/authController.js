@@ -2,7 +2,7 @@ const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 
-// Send email via Brevo HTTP API (no SDK needed)
+// Send email via Brevo HTTP API 
 const sendBrevoEmail = async (to, subject, text) => {
   const response = await fetch('https://api.brevo.com/v3/smtp/email', {
     method: 'POST',
