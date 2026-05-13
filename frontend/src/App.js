@@ -3,41 +3,6 @@ import axios from 'axios';
 import { fetchEvents, bookEvent, unjoinEvent, deleteEvent } from './services/api';
 import CreateEvent from './components/CreateEvent';
 
-// --- RESET PASSWORD PAGE COMPONENT ---
-function ResetPasswordPage({ token }) {
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [message, setMessage] = useState('');
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (password !== confirmPassword) return setMessage("Passwords do not match");
-    try {
-      await axios.put(`${process.env.REACT_APP_API_URL}/api/auth/reset-password/${token}`, { password });
-      alert("Password updated successfully!");
-      window.location.href = '/';
-    } catch (err) {
-      setMessage(err.response?.data?.message || 'Token invalid or expired');
-    }
-  };
-
-  return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', background: '#f9f9f7' }}>
-      <div style={{ background: 'white', padding: '2rem', borderRadius: '12px', boxShadow: '0 4px 20px rgba(0,0,0,0.08)', width: '100%', maxWidth: '400px' }}>
-        <h2 style={{ textAlign: 'center', marginBottom: '1.5rem' }}>Set New Password</h2>
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          <label className="field-label">NEW PASSWORD</label>
-          <input type="password" className="field-input" value={password} onChange={(e) => setPassword(e.target.value)} required />
-          <label className="field-label">CONFIRM PASSWORD</label>
-          <input type="password" className="field-input" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
-          <button type="submit" className="search-btn">UPDATE PASSWORD</button>
-        </form>
-        {message && <p style={{ color: 'red', textAlign: 'center', marginTop: '1rem' }}>{message}</p>}
-      </div>
-    </div>
-  );
-}
-
 function App() {
   const [events, setEvents] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -50,15 +15,7 @@ function App() {
   const [forgotEmail, setForgotEmail] = useState('');
   const [message, setMessage] = useState({ text: '', type: '' });
 
-  // --- HANDLE RESET PASSWORD ROUTE ---
-  const urlPath = window.location.pathname;
-  const isResetPassword = urlPath.startsWith('/reset-password/');
-  const resetToken = isResetPassword ? urlPath.split('/reset-password/')[1] : null;
-
-  if (isResetPassword) {
-    return <ResetPasswordPage token={resetToken} />;
-  }
-
+  // ✅ useEffect BEFORE any conditional returns
   useEffect(() => {
     if (isLoggedIn) loadEvents();
   }, [isLoggedIn]);
