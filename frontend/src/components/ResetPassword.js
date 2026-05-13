@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const ResetPassword = () => {
+const ResetPassword = ({ token }) => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState('');
-  const { token } = useParams();
-  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,7 +15,7 @@ const ResetPassword = () => {
     try {
       await axios.put(`${process.env.REACT_APP_API_URL}/api/auth/reset-password/${token}`, { password });
       alert("Password updated successfully!");
-      navigate('/login');
+      window.location.href = '/';
     } catch (err) {
       setMessage(err.response?.data?.message || 'Token invalid or expired');
     }
