@@ -2,10 +2,12 @@ import axios from 'axios';
 
 /**
  * 🌍 DYNAMIC BASE URL
- * Locally: Defaults to localhost:5000
- * Deployed: Will use the REACT_APP_API_URL you set in Vercel/Render
+ * Locally: Defaults to localhost:5000/api
+ * Deployed: Uses REACT_APP_API_URL from Vercel environment variables
  */
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+const API_BASE_URL = process.env.REACT_APP_API_URL 
+  ? `${process.env.REACT_APP_API_URL}/api`
+  : 'http://localhost:5000/api';
 
 const API = axios.create({ 
   baseURL: API_BASE_URL 
@@ -15,7 +17,6 @@ const API = axios.create({
 API.interceptors.request.use((req) => {
   const token = localStorage.getItem('token'); 
   
-  // Helpful log to verify the handshake in the console
   console.log("Checking for token...", token ? "Token Found ✅" : "No Token Found ❌");
 
   if (token) {
@@ -32,7 +33,7 @@ export const deleteEvent = (id) => API.delete(`/events/${id}`);
 export const bookEvent = (id) => API.put(`/events/${id}/book`);
 
 /**
- * ✨ THE GEMINI AI SERVICE
+ * ✨ AI SERVICE
  * Sends the event title to the backend to generate a professional description.
  */
 export const generateAIDescription = (title) => API.post('/events/ai/describe', { title });
