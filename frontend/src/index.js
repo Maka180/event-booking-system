@@ -14,3 +14,12 @@ root.render(
     {isResetPassword ? <ResetPassword token={resetToken} /> : <App />}
   </React.StrictMode>
 );
+
+// ✅ PWA Service Worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then(() => console.log('✅ EventHub PWA ready'))
+      .catch(err => console.log('❌ SW error:', err));
+  });
+}
